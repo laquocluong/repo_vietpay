@@ -1,0 +1,46 @@
+<mxfile host="app.diagrams.net">
+  <diagram name="ER Diagram" id="tE-U-dhsgItbUQEMNHyw">
+    <mxGraphModel dx="1664" dy="914" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="hyp8T6IR6dNgJzDGOk4S-1" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="&lt;b&gt;USERS&lt;/b&gt;&lt;hr/&gt; PK id : UUID&lt;br/&gt; email : VARCHAR&lt;br/&gt; full_name : VARCHAR&lt;br/&gt; created_at : TIMESTAMPTZ&lt;br/&gt; updated_at : TIMESTAMPTZ" vertex="1">
+          <mxGeometry height="170" width="240" x="60" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="hyp8T6IR6dNgJzDGOk4S-2" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" value="&lt;b&gt;WALLETS&lt;/b&gt;&lt;hr/&gt; PK id : UUID&lt;br/&gt; FK user_id : UUID&lt;br/&gt; currency : CHAR(3)&lt;br/&gt; status : VARCHAR&lt;br/&gt; created_at&lt;br/&gt; updated_at" vertex="1">
+          <mxGeometry height="180" width="250" x="380" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="hyp8T6IR6dNgJzDGOk4S-3" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" value="&lt;b&gt;TRANSACTIONS&lt;/b&gt;&lt;hr/&gt; PK id : UUID&lt;br/&gt; FK wallet_id : UUID&lt;br/&gt; transaction_type&lt;br/&gt; amount&lt;br/&gt; currency&lt;br/&gt; status&lt;br/&gt; reference&lt;br/&gt; created_at" vertex="1">
+          <mxGeometry height="230" width="280" x="730" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="hyp8T6IR6dNgJzDGOk4S-4" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" value="&lt;b&gt;LEDGER_ENTRIES&lt;/b&gt;&lt;hr/&gt; PK id : UUID&lt;br/&gt; FK transaction_id&lt;br/&gt; FK wallet_id&lt;br/&gt; entry_type (Debit/Credit)&lt;br/&gt; amount&lt;br/&gt; currency&lt;br/&gt; created_at" vertex="1">
+          <mxGeometry height="220" width="280" x="730" y="360" as="geometry" />
+        </mxCell>
+        <mxCell id="hyp8T6IR6dNgJzDGOk4S-5" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" value="&lt;b&gt;IDEMPOTENCY_KEYS&lt;/b&gt;&lt;hr/&gt; PK id&lt;br/&gt; UNIQUE idempotency_key&lt;br/&gt; FK transaction_id&lt;br/&gt; request_hash&lt;br/&gt; created_at" vertex="1">
+          <mxGeometry height="190" width="270" x="1080" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="hyp8T6IR6dNgJzDGOk4S-6" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;" value="&lt;b&gt;AUDIT_LOGS&lt;/b&gt;&lt;hr/&gt; PK id&lt;br/&gt; table_name&lt;br/&gt; record_id&lt;br/&gt; action&lt;br/&gt; old_values JSONB&lt;br/&gt; new_values JSONB&lt;br/&gt; changed_by&lt;br/&gt; created_at" vertex="1">
+          <mxGeometry height="230" width="280" x="1080" y="360" as="geometry" />
+        </mxCell>
+        <mxCell id="hyp8T6IR6dNgJzDGOk4S-7" edge="1" parent="1" source="hyp8T6IR6dNgJzDGOk4S-1" style="endArrow=block;html=1;" target="hyp8T6IR6dNgJzDGOk4S-2" value="1 : N">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="hyp8T6IR6dNgJzDGOk4S-8" edge="1" parent="1" source="hyp8T6IR6dNgJzDGOk4S-2" style="endArrow=block;html=1;" target="hyp8T6IR6dNgJzDGOk4S-3" value="1 : N">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="hyp8T6IR6dNgJzDGOk4S-9" edge="1" parent="1" source="hyp8T6IR6dNgJzDGOk4S-3" style="endArrow=block;html=1;" target="hyp8T6IR6dNgJzDGOk4S-4" value="1 : N">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="hyp8T6IR6dNgJzDGOk4S-10" edge="1" parent="1" source="hyp8T6IR6dNgJzDGOk4S-2" style="endArrow=block;html=1;" target="hyp8T6IR6dNgJzDGOk4S-4" value="1 : N">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="hyp8T6IR6dNgJzDGOk4S-11" edge="1" parent="1" source="hyp8T6IR6dNgJzDGOk4S-3" style="endArrow=block;html=1;" target="hyp8T6IR6dNgJzDGOk4S-5" value="1 : 1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="hyp8T6IR6dNgJzDGOk4S-12" edge="1" parent="1" source="hyp8T6IR6dNgJzDGOk4S-3" style="endArrow=block;html=1;" target="hyp8T6IR6dNgJzDGOk4S-6" value="1 : N">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
