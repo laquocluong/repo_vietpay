@@ -9,4 +9,6 @@ diagrams\ER Diagram.jpg
     
 3) Zero-downtime migration: docs\zero-downtime-migration.md
 
+4) Polyglot modelling: docs\polyglot-modeling.md
 
+5) Observability: docs\observability.md
