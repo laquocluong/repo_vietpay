@@ -12,3 +12,5 @@ diagrams\ER Diagram.jpg
 4) Polyglot modelling: docs\polyglot-modeling.md
 
 5) Observability: docs\observability.md
+
+6) Design write-up (ADR): docs\adr.md
