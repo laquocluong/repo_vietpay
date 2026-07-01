@@ -1,8 +1,7 @@
 -- 1.Creates the users table.
 -- Store customer information.
 
--- Enums & Extensions
-CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+CREATE EXTENSION IF NOT EXISTS "pgcrypto";
 
 
 CREATE TABLE users (
