@@ -24,9 +24,11 @@
 
 ---
 
-# Grafana Dashboard
+# Part I: Grafana Dashboard Metrics
 
-## 1. Query Latency
+## 1. Technical & Infrastructure Metrics
+
+### 1.1 Query Latency
 
 Metrics
 
@@ -41,7 +43,7 @@ Detect inefficient SQL queries, missing indexes, or unexpected load.
 
 ---
 
-## 2. Throughput
+### 1.2. Throughput
 
 Metrics
 
@@ -57,7 +59,7 @@ Measure system load and identify traffic spikes.
 
 ---
 
-## 3. Replication Lag
+### 1.3. Replication Lag
 
 Metrics
 
@@ -74,7 +76,7 @@ Large replication lag can result in stale reporting data.
 
 ---
 
-## 4. Lock Contention
+### 1.4. Lock Contention
 
 Metrics
 
@@ -88,27 +90,10 @@ Purpose
 Identify blocking operations that may delay payment processing.
 
 
----
-
-## 5. Settlement Lag
-
-Business Metrics
-
-* Pending settlements
-* Average settlement time
-* Maximum settlement time
-* Settlement success rate
-
-Purpose
-
-Monitor whether financial settlements are being completed within expected timeframes.
-
-This is one of the most important business health indicators.
-
 
 ---
 
-## 6. Capacity
+### 1.5. Capacity
 
 Metrics:
 
@@ -126,109 +111,28 @@ Purpose:
 
 Forecast capacity needs and avoid resource exhaustion.
 
+---
+
+## 2. Business KPIs & Metrics
+   
+### 2.1 Settlement Lag
+
+Business Metrics
+
+* Pending settlements
+* Average settlement time
+* Maximum settlement time
+* Settlement success rate
+
+Purpose
+
+Monitor whether financial settlements are being completed within expected timeframes.
+
+This is one of the most important business health indicators.
 
 ---
 
-## 7. Alerting Strategy
-
-* Critical Alerts: Database Unavailable
-
-* Condition:  Database unavailable for >30 seconds
-
-* Severity:   Critical
-
-* Reason:     Payment processing cannot continue.
-
-
----
-
-## 8. Replication Lag
-
-* Condition:  Replication lag >10 seconds
-
-* Severity:   Critical
-
-* Reason:     Reporting data becomes stale, and failover may result in data loss.
-
-
----
-
-## 9. Settlement Lag
-
-* Condition:  Average settlement time >5 minutes
-
-* Severity:   Critical
-
-* Reason:     Delayed settlements directly impact customers and may violate financial service commitments.
-
-
----
-
-## 10. Deadlocks
-
-* Condition: Deadlocks > 5 within 5 minutes
-
-* Severity:  Critical
-
-* Reason:    Frequent deadlocks indicate application or transaction design issues that can block payment processing.
-
-
----
-
-## 11. Warning Alerts
-Slow Queries
-
-* Condition:  P95 query latency >500 ms for 10 minutes
-
-* Reason:     May indicate missing indexes, poor execution plans, or increasing database load.
-
-
-
----
-
-## 12. Connection Pool
-
-* Condition:  Connection pool utilization >80%
-
-* Reason:     The application is approaching the database connection limit.
-
-
----
-
-## 13. Table Growth
-
-* Condition:  Transactions table exceeds expected monthly growth by 20%
-
-* Reason:     Unexpected growth may indicate increased business activity or duplicate event ingestion.
-
-
----
-
-## 14. Disk Usage
-
-* Condition:  Disk utilization >80%
-
-* Severity:   Warning
-
-At 90%
-
-* Severity:   Critical
-
-* Reason:     Low disk space can cause write failures and database outages.
-
-
----
-
-## 1.  WAL Generation
-
-* Condition:  WAL generation rate doubles expected baseline
-
-* Reason:     May indicate excessive updates, bulk operations, or abnormal workloads.
-
-
----
-
-## 16. Business KPIs
+### 2.2 Core Business Key Indicators
 
 In addition to infrastructure metrics, the dashboard should include key business indicators.
 
@@ -244,10 +148,113 @@ Metrics
 
 These metrics help distinguish between technical failures and business-related issues.
 
+---
+
+# Part II: Alerting Strategy
+
+## 1. Critical Alerts (P1 - Immediate Intervention Required)
+
+### 1.1 Database Unavailable
+
+* Condition:  Database unavailable for >30 seconds
+
+* Severity:   Critical
+
+* Reason:     Payment processing cannot continue.
+
 
 ---
 
-## 17. Dashboard Layout
+### 1.2 Replication Lag
+
+* Condition:  Replication lag >10 seconds
+
+* Severity:   Critical
+
+* Reason:     Reporting data becomes stale, and failover may result in data loss.
+
+
+---
+
+### 1.3 Settlement Lag
+
+* Condition:  Average settlement time >5 minutes
+
+* Severity:   Critical
+
+* Reason:     Delayed settlements directly impact customers and may violate financial service commitments.
+
+
+---
+
+### 1.4 Deadlocks
+
+* Condition: Deadlocks > 5 within 5 minutes
+
+* Severity:  Critical
+
+* Reason:    Frequent deadlocks indicate application or transaction design issues that can block payment processing.
+
+---
+
+### 1.5 Critical Disk Usage
+
+* Condition:  Disk utilization > 90%
+
+* Reason:     Low disk space can cause write failures and database outages.
+
+---
+
+## 2. Warning Alerts (P2 - Early Warning & Investigation)
+
+### 2.1 Slow Queries
+
+* Condition:  P95 query latency >500 ms for 10 minutes
+
+* Reason:     May indicate missing indexes, poor execution plans, or increasing database load.
+
+
+---
+
+### 2.2 Connection Pool
+
+* Condition:  Connection pool utilization >80%
+
+* Reason:     The application is approaching the database connection limit.
+
+
+---
+
+### 2.3 Table Growth
+
+* Condition:  Transactions table exceeds expected monthly growth by 20%
+
+* Reason:     Unexpected growth may indicate increased business activity or duplicate event ingestion.
+
+
+---
+
+### 2.4 Warning Disk Usage
+
+* Condition:  Disk utilization >80%
+
+* Reason:     Buffer threshold before reaching critical capacity.
+
+---
+
+### 2.5 WAL Generation
+
+* Condition:  WAL generation rate doubles expected baseline
+
+* Reason:     May indicate excessive updates, bulk operations, or abnormal workloads.
+
+---
+
+# Part III: Dashboard Layout Structure
+
+To ensure high usability for operations, the Grafana dashboard is organized into the following logical rows/panels:
+
+## Row 1: Dashboard Layout
 Overview
 System health
 Database availability
@@ -256,7 +263,7 @@ Active alerts
 
 ---
 
-## 18. Performance
+## Row 2: Performance Panel
 * Query latency
 * TPS- Transactions Per Second
 * Slow queries
@@ -265,7 +272,7 @@ Active alerts
 
 ---
 
-## 19. Database Health
+## Row 3: Database Health Panel
 * Lock contention
 * Deadlocks
 * Active sessions
@@ -274,7 +281,7 @@ Active alerts
 
 ---
 
-## 20. Capacity
+## Row 4: Capacity Panel
 * Database size
 * Disk usage
 * CPU
@@ -284,14 +291,11 @@ Active alerts
 
 ---
 
-## 21. Business Metrics
+## Row 5: Business Metrics Panel
 * Settlement lag
 * Payment success rate
 * Pending settlements
 * Daily transaction volume
-
-
-
 
 ---
 

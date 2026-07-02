@@ -18,10 +18,20 @@ The design emphasizes:
 # Repository Structure
 
 ```text
-repo_vietpay/
-│
-├── README.md
-│
+# Repository Structure
+
+```text
+REPO_VIETPAY
+├── diagrams/
+│   ├── ER Diagram.drawio.xml
+│   └── ER Diagram.jpg
+├── docs/
+│   ├── adr.md
+│   ├── integrity.md
+│   ├── observability.md
+│   ├── performance.md
+│   ├── polyglot-modeling.md
+│   └── zero-downtime-migration.md
 ├── migrations/
 │   ├── 001_users.sql
 │   ├── 002_wallets.sql
@@ -30,21 +40,10 @@ repo_vietpay/
 │   ├── 005_idempotency.sql
 │   ├── 006_audit_logs.sql
 │   └── 007_indexes.sql
-│
-├── docs/
-│   ├── integrity.md
-│   ├── performance.md
-│   ├── zero-downtime-migration.md
-│   ├── polyglot-modeling.md
-│   ├── observability.md
-│   └── adr.md
-│
-├── diagrams/
-│   ├── er-diagram.png
-│   └── er-diagram.drawio.xml
-│
+├── notes/
 ├── schema/
-│   ├── schema.sql
+│   └── schema.sql
+└── README.md
 ```
 
 ---
