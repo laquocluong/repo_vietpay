@@ -31,6 +31,13 @@ CREATE TABLE ledger_entries (
     CONSTRAINT chk_entry_type
         CHECK(entry_type IN ('DEBIT','CREDIT')),
 
-    CONSTRAINT chk_ledger_amount
-        CHECK(amount > 0)
+    -- FIX: Schema rule enforcing DEBIT is strictly positive, CREDIT is strictly negative
+    CONSTRAINT chk_ledger_signed_amount
+        CHECK(
+            (entry_type = 'DEBIT' AND amount > 0) OR 
+            (entry_type = 'CREDIT' AND amount < 0)
+        )
 );
+
+Output:
+CREATE TABLE

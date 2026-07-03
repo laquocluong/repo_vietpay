@@ -11,6 +11,9 @@ CREATE TABLE wallets (
 
     status VARCHAR(20) NOT NULL DEFAULT 'ACTIVE',
 
+    -- FIX: Resolved missing wallet balance column 
+    balance NUMERIC(20,2) NOT NULL DEFAULT 0.0000,
+    
     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
     updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
 
@@ -21,3 +24,7 @@ CREATE TABLE wallets (
     CONSTRAINT chk_wallet_status
         CHECK (status IN ('ACTIVE','LOCKED','CLOSED'))
 );
+
+
+Output:
+CREATE TABLE

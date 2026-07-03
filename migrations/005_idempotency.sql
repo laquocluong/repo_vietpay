@@ -4,13 +4,15 @@
 -- Store client-provided idempotency keys.
 -- Map each key to a completed transaction.
 
+
 CREATE TABLE idempotency_keys (
 
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
 
     idempotency_key VARCHAR(255) NOT NULL UNIQUE,
-
-    transaction_id UUID NOT NULL UNIQUE,
+    -- FIX: transaction_id must be NULLABLE to resolve the concurrency race condition.
+    -- The app first locks the idempotency_key atomically, then updates this reference once the transaction is saved.
+    transaction_id UUID UNIQUE,
 
     request_hash TEXT,
 

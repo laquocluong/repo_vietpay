@@ -42,6 +42,9 @@ CREATE TABLE transactions (
         ))
 );
 
+Output:
+CREATE TABLE
+
 /*
 A common reporting query is slow in production: 
 SELECT wallet_id, currency, SUM(amount) FROM transactions

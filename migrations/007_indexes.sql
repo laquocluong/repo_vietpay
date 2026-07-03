@@ -6,15 +6,17 @@ ON wallets(user_id);
 CREATE INDEX idx_transaction_wallet
 ON transactions(wallet_id);
 
--- Monthly reporting query
--- Should be monthly partitioning of the transactions table by created_at to improve reporting performance and simplify archival.
-CREATE INDEX idx_transaction_report
-ON transactions(status, created_at, wallet_id, currency);
-
--- Partial index for settled transactions only
-CREATE INDEX idx_transaction_settled
-ON transactions(created_at, wallet_id, currency)
-WHERE status='SETTLED';
+-- Because the transactions table contains approximately 50 million rows and remains under continuous write traffic, indexes must be created without blocking inserts or updates.
+-- Use PostgreSQL's concurrent index build.
+CREATE INDEX CONCURRENTLY idx_transactions_settled
+ON transactions
+(
+    created_at,
+    wallet_id,
+    currency
+)
+INCLUDE (amount)
+WHERE status = 'SETTLED';
 
 -- Ledger lookup
 CREATE INDEX idx_ledger_transaction

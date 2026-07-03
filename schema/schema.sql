@@ -31,6 +31,7 @@ CREATE TABLE wallets (
     status VARCHAR(20) NOT NULL DEFAULT 'ACTIVE',
     -- FIX: Resolved missing wallet balance column 
     balance NUMERIC(20,2) NOT NULL DEFAULT 0.0000,
+    
     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
     updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
 
@@ -243,29 +244,84 @@ CREATE TRIGGER trg_audit_transactions AFTER INSERT OR UPDATE OR DELETE ON transa
 -- INDEXES
 ----------------------------------------------------------
 
+-- Wallet lookup
 CREATE INDEX idx_wallet_user
 ON wallets(user_id);
 
+-- Transaction lookup by wallet
 CREATE INDEX idx_transaction_wallet
 ON transactions(wallet_id);
 
-
--- FIX: Merged the overlapping partial indexes. 
--- Included 'amount' to ensure Index-Only Scans can run without fetching raw heap tables.
-CREATE INDEX idx_transactions_settled_reporting
-ON transactions(created_at, wallet_id, currency)
+-- Because the transactions table contains approximately 50 million rows and remains under continuous write traffic, indexes must be created without blocking inserts or updates.
+-- Use PostgreSQL's concurrent index build.
+CREATE INDEX CONCURRENTLY idx_transactions_settled
+ON transactions
+(
+    created_at,
+    wallet_id,
+    currency
+)
 INCLUDE (amount)
 WHERE status = 'SETTLED';
 
-
+-- Ledger lookup
 CREATE INDEX idx_ledger_transaction
 ON ledger_entries(transaction_id);
 
 CREATE INDEX idx_ledger_wallet
 ON ledger_entries(wallet_id);
 
+-- Audit search
+CREATE INDEX idx_audit_record
+ON audit_logs(table_name, record_id);
+
+-- Idempotency lookup
 CREATE UNIQUE INDEX idx_idempotency_key
 ON idempotency_keys(idempotency_key);
 
-CREATE INDEX idx_audit_record
-ON audit_logs(table_name, record_id);
+
+CREATE MATERIALIZED VIEW mv_monthly_wallet_settlement AS
+SELECT
+    date_trunc('month', created_at) AS month,
+    wallet_id,
+    currency,
+    SUM(amount) AS total_amount
+FROM transactions
+WHERE status='SETTLED'
+GROUP BY
+    date_trunc('month', created_at),
+    wallet_id,
+    currency;
+
+
+CREATE UNIQUE INDEX
+ON mv_monthly_wallet_settlement
+(
+    month,
+    wallet_id,
+    currency
+);
+
+
+Output:
+CREATE EXTENSION
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE FUNCTION
+CREATE TRIGGER
+CREATE FUNCTION
+CREATE TRIGGER
+CREATE FUNCTION
+CREATE TRIGGER
+CREATE TRIGGER
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
